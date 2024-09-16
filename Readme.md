@@ -1,3 +1,11 @@
+**Lancement**
+
+Afin de lancer le build et les tests, vous pouvez utiliser le maven wrapper mis à disposition
+
+```bash
+./mvnw clean install
+```
+
 
 **Partie 1 :**  
   
@@ -28,3 +36,4 @@ Je voudrais donc recenser dans mon environnement (Hangar + ferme) tout ce qui es
 Pour préparer notre entretien, je vous envoie un code simple, avec ses spécifications. Il ne fait pas grand-chose, mais il essaie de répondre à la partie 1 de ces spécifications. De mon point de vue, il est mal fait. Je vais donc vous proposer d’en faire une meilleure version, puis d’essayer d’écrire la partie 2.
 
 Notre entretien portera donc sur une étude du code que vous aurez réalisé ainsi que sur les raisons justifiant vos choix.
+[Readme.md](Readme.md)
