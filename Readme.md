@@ -6,6 +6,8 @@ Afin de lancer le build et les tests, vous pouvez utiliser le maven wrapper mis 
 ./mvnw clean install
 ```
 
+En absence d'informations sur la version de Java à utiliser, j'ai fait le choix de Java 17 en version minimale.
+
 
 **Partie 1 :**  
   
