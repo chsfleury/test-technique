@@ -1,11 +1,10 @@
 package com.altaprofits.test.technique.model.building;
 
-import com.altaprofits.test.technique.model.FloatingVehicle;
-import com.altaprofits.test.technique.model.FlyingVehicle;
-import com.altaprofits.test.technique.model.RollingVehicle;
-import lombok.AccessLevel;
+import com.altaprofits.test.technique.model.Floating;
+import com.altaprofits.test.technique.model.Flying;
+import com.altaprofits.test.technique.model.Rolling;
+import com.altaprofits.test.technique.model.vehicle.Vehicle;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,51 +13,39 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class Hangar {
+import static com.altaprofits.test.technique.model.building.HangarSection.AIRPORT;
+import static com.altaprofits.test.technique.model.building.HangarSection.GARAGE;
+import static com.altaprofits.test.technique.model.building.HangarSection.PORT;
 
-  @NonNull
-  private final Set<FlyingVehicle> flyingVehicles;
-
-  @NonNull
-  private final Set<FloatingVehicle> floatingVehicles;
+public class Hangar implements Building {
 
   @NonNull
-  private final Set<RollingVehicle> rollingVehicles;
+  private final Set<Vehicle> vehicles;
 
   public Hangar() {
-    floatingVehicles = new HashSet<>();
-    flyingVehicles = new HashSet<>();
-    rollingVehicles = new HashSet<>();
+    vehicles = new HashSet<>();
   }
 
-  public void add(FlyingVehicle vehicle) {
-    flyingVehicles.add(vehicle);
+  public void add(Vehicle vehicle) {
+    vehicles.add(vehicle);
   }
 
-  public void add(FloatingVehicle vehicle) {
-    floatingVehicles.add(vehicle);
+  public long airportVehicleCount() {
+    return vehicles.stream().filter(v -> AIRPORT == v.getSection()).count();
   }
 
-  public void add(RollingVehicle vehicle) {
-    rollingVehicles.add(vehicle);
+  public long portVehicleCount() {
+    return vehicles.stream().filter(v -> PORT == v.getSection()).count();
   }
 
-  public int flyingVehicleCount() {
-    return flyingVehicles.size();
-  }
-
-  public int floatingVehicleCount() {
-    return floatingVehicles.size();
-  }
-
-  public int rollingVehicleCount() {
-    return rollingVehicles.size();
+  public long garageVehicleCount() {
+    return vehicles.stream().filter(v -> GARAGE == v.getSection()).count();
   }
 
   public int totalVehicleCount() {
-    return flyingVehicleCount() + floatingVehicleCount() + rollingVehicleCount();
+    return vehicles.size();
   }
 
   public void printToConsole() throws IOException {
@@ -74,20 +61,30 @@ public class Hangar {
   }
 
   public void print(BufferedWriter writer) throws IOException {
-    for (FlyingVehicle vehicle : flyingVehicles) {
-      vehicle.print(writer);
-      writer.newLine();
-    }
-
-    for (FloatingVehicle vehicle : floatingVehicles) {
-      vehicle.print(writer);
-      writer.newLine();
-    }
-
-    for (RollingVehicle vehicle : rollingVehicles) {
+    for (Vehicle vehicle : vehicles) {
       vehicle.print(writer);
       writer.newLine();
     }
   }
 
+  @Override
+  public Stream<Flying> getFlying() {
+    return vehicles.stream()
+        .filter(vehicle -> vehicle instanceof Flying)
+        .map(vehicle -> (Flying) vehicle);
+  }
+
+  @Override
+  public Stream<Floating> getFloating() {
+    return vehicles.stream()
+        .filter(vehicle -> vehicle instanceof Floating)
+        .map(vehicle -> (Floating) vehicle);
+  }
+
+  @Override
+  public Stream<Rolling> getRolling() {
+    return vehicles.stream()
+        .filter(vehicle -> vehicle instanceof Rolling)
+        .map(vehicle -> (Rolling) vehicle);
+  }
 }
